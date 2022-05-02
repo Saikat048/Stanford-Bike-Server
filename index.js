@@ -1,19 +1,17 @@
 const express = require('express');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
+require('dotenv').config()
 const app = express();
 const cors = require('cors');
 const port = process.env.PORT || 5000;
 
-
-// PASS : PODaGSQLYTVruhf2
-
+ 
 
 app.use(cors());
 app.use(express.json());
 
 
-
-const uri = "mongodb+srv://assignment:PODaGSQLYTVruhf2@cluster0.klwxy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+const uri = `mongodb+srv://${process.env.DB_ASSIGNMENT}:${process.env.DB_PASSWORD}@cluster0.klwxy.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`; 
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 async function run() {
 
@@ -36,8 +34,7 @@ async function run() {
         const product = await productCollection.findOne(query);
         res.send(product) 
       })
-
-      
+  
  
     } finally { 
     //   await client.close(); 
