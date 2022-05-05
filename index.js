@@ -19,6 +19,7 @@ async function run() {
   
       await client.connect(); 
       const productCollection = client.db("assignment-product").collection("product");
+      const selectCollection = client.db("select-product").collection("select");
 
     //   get data 
       app.get('/products', async(req,res) => {
@@ -48,12 +49,37 @@ async function run() {
         res.send(result)
       })
 
+
+      app.post('/select', async(req, res) => {
+        const selectInfo = req.body;
+        const result = await selectCollection.insertOne(selectInfo);
+        res.send(result)
+      })
+
+      // app.put('/products/:id', async(req, res) => {
+      //   const id = req.params.id;
+      //   const update = req.body;
+      //   console.log(update)
+      //   const filter = {_id: ObjectId(id)};
+      //   const options = { upsert: true };
+      //   const updateDoc = { 
+      //     $set: { 
+      //       quantity: update.quantity,
+      //     }
+      //   };
+      //   const result = await productCollection.updateOne(filter, updateDoc, options);
+      //   res.send(result)
+      // })
  
     } finally { 
     //   await client.close(); 
     } 
   } 
   run().catch(console.dir);
+
+  app.get('/', (req, res) => {
+    res.send('Running Server')
+  })
  
 app.listen(port, ()=>{
     console.log('successfully connected', port)
