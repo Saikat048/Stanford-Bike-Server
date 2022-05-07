@@ -21,13 +21,18 @@ async function run() {
       const productCollection = client.db("assignment-product").collection("product");
       const itemsCollection = client.db("assignment-product").collection("item");
 
-    //   get data 
+
+    //   Get all products from database
+
       app.get('/products', async(req,res) => {
         const query = {};
         const cursor = productCollection.find(query);
         const products = await cursor.toArray();
         res.send(products) 
       });
+
+
+      // Get one product 
 
       app.get('/products/:id', async(req, res) => {
         const id = req.params.id; 
@@ -36,13 +41,21 @@ async function run() {
         res.send(product) 
       })
 
+
+
+      // Add product 
+
       app.post('/products', async(req, res) =>{
         const newProduct = req.body;
         const result = await productCollection.insertOne(newProduct);
         res.send(result)
       })
   
-      app.delete('/products/:id', async(req, res) => {
+
+
+      // Item delete 
+
+      app.delete('/item/:id', async(req, res) => {
         const id = req.params.id;
         const query = {_id: ObjectId(id)};
         const result = await productCollection.deleteOne(query);
@@ -50,11 +63,24 @@ async function run() {
       })
 
 
-      // app.post('/select', async(req, res) => {
-      //   const selectInfo = req.body;
-      //   const result = await selectCollection.insertOne(selectInfo);
-      //   res.send(result)
-      // })
+      
+      // My item data update and load 
+
+      app.post('/item', async(req, res) =>{
+        const newProduct = req.body;
+        console.log(newProduct)
+        const result = await itemsCollection.insertOne(newProduct);
+        res.send(result)
+      })
+      app.get('/item', async(req,res) => {
+        const query = {};
+        const cursor = itemsCollection.find(query);
+        const item = await cursor.toArray();
+        res.send(item) 
+      });
+
+
+      // Quantity update 
 
       app.put('/products/:id', async(req, res) => {
         const id = req.params.id;
@@ -69,19 +95,7 @@ async function run() {
         };
         const result = await productCollection.updateOne(filter, updateDoc, options);
         res.send(result)
-      })
-
-      app.post('/item', async(req, res) =>{
-        const newProduct = req.body;
-        const result = await itemsCollection.insertOne(newProduct);
-        res.send(result)
-      })
-      app.get('/item', async(req,res) => {
-        const query = {};
-        const cursor = itemsCollection.find(query);
-        const item = await cursor.toArray();
-        res.send(item) 
-      });
+      }) 
  
     } finally { 
     //   await client.close(); 
