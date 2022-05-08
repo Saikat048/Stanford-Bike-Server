@@ -58,6 +58,7 @@ async function run() {
       app.delete('/item/:id', async(req, res) => {
         const id = req.params.id;
         const query = {_id: ObjectId(id)};
+        console.log(query)
         const result = await itemsCollection.deleteOne(query);
         res.send(result)
       })
@@ -67,8 +68,7 @@ async function run() {
       // My item data update and load 
 
       app.post('/item', async(req, res) =>{
-        const newProduct = req.body;
-        console.log(newProduct)
+        const newProduct = req.body; 
         const result = await itemsCollection.insertOne(newProduct);
         res.send(result)
       })
