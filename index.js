@@ -53,7 +53,7 @@ async function run() {
   
 
       // product delete 
-      
+
       app.delete('/products/:id', async(req, res) => {
         const id = req.params.id;
         const query = {_id: ObjectId(id)};
@@ -93,8 +93,7 @@ async function run() {
 
       app.put('/products/:id', async(req, res) => {
         const id = req.params.id;
-        const update = req.body;
-        console.log(update)
+        const update = req.body; 
         const filter = {_id: ObjectId(id)};
         const options = { upsert: true };
         const updateDoc = { 
