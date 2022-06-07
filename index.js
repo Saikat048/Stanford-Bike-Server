@@ -62,17 +62,6 @@ async function run() {
         res.send(result)
       })
 
-      // Item delete 
-
-      app.delete('/item/:id', async(req, res) => {
-        const id = req.params.id;
-        const query = {_id: ObjectId(id)};
-        console.log(query)
-        const result = await itemsCollection.deleteOne(query);
-        res.send(result)
-      })
-
-
       
       // My item data update and load 
 
@@ -87,6 +76,27 @@ async function run() {
         const item = await cursor.toArray();
         res.send(item) 
       });
+
+       
+      // Get single item
+
+      app.get('/item/:id', async(req, res) => {
+        const id = req.params.id; 
+        const query = {_id: ObjectId(id)};
+        const item = await itemsCollection.findOne(query);
+        res.send(item) 
+      })
+
+      
+      // Item delete 
+
+      app.delete('/item/:id', async(req, res) => {
+        const id = req.params.id;
+        const query = {_id: ObjectId(id)};
+        console.log(query)
+        const result = await itemsCollection.deleteOne(query);
+        res.send(result)
+      })
 
 
       // Quantity update 
@@ -104,6 +114,9 @@ async function run() {
         const result = await productCollection.updateOne(filter, updateDoc, options);
         res.send(result)
       }) 
+
+
+     
  
     } finally { 
     //   await client.close(); 
